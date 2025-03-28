@@ -1169,6 +1169,10 @@ main {
   #BLOG
 \*-----------------------------------*/
 
+/* ---------------------------------- */
+/* BLOG MODAL STYLES */
+/* ---------------------------------- */
+
 .modal {
   display: none; /* Ensure it's hidden initially */
   position: fixed;
@@ -1189,31 +1193,57 @@ main {
   background: #222;
   padding: 20px;
   border-radius: 12px;
-  max-width: 600px;
+  max-width: 650px;
   width: 90%;
-  position: absolute;
+  position: relative;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%); /* This centers it */
-} 
-
-.modal-layout2 {
-  display: flex;
-  flex-direction: column; /* Change from row to column */
-  align-items: center; /* Center text under the image */
-  gap: 15px;
-  text-align: center;
 }
 
+/* Layout for image + text (matches wireframe) */
+.modal-layout2 {
+  display: flex;
+  flex-direction: row; /* Image on left, text on right */
+  align-items: flex-start;
+  gap: 20px;
+}
 
-.modal img {
-  max-width: 80%; /* Make the image take more space */
+/* Modal Image */
+#modalImg {
+  max-width: 40%;
+  height: auto;
   border-radius: 8px;
 }
 
+/* Modal Text Section */
 .modal-text {
+  flex: 1; /* Takes remaining space */
+  display: flex;
+  flex-direction: column;
   color: white;
 }
+
+/* Title styling */
+#modalTitle {
+  font-size: 22px;
+  margin: 0;
+}
+
+/* Date styling */
+.modal-date {
+  font-size: 14px;
+  color: #bbb;
+  margin-bottom: 10px;
+}
+
+/* Full text inside modal */
+.modal-full-text {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Close Button */
 .close {
   position: absolute;
   top: 10px;
@@ -1221,14 +1251,45 @@ main {
   font-size: 28px;
   cursor: pointer;
 }
+
+/* Responsive: Adjust modal for small screens */
 @media (max-width: 600px) {
-  .modal-layout {
-    flex-direction: column;
+  .modal-layout2 {
+    flex-direction: column; /* Stack content */
+    align-items: center;
     text-align: center;
   }
-  .modal img {
+  #modalImg {
     max-width: 100%;
   }
+}
+
+/* ---------------------------------- */
+/* BLOG PREVIEW STYLES */
+/* ---------------------------------- */
+
+.modal-full-text {
+  max-height: 70vh;  /* Adjust as needed */
+  overflow-y: auto;  /* Allows scrolling if text is too long */
+}
+
+/* Truncate text in preview only */
+.blog-post-item .blog-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Adjust lines visible in preview */
+  -webkit-box-orient: vertical;
+}
+
+/* Ensure full text is visible in the modal */
+.modal-content .blog-text {
+  overflow: visible;
+  text-overflow: unset;
+  display: block;
+  -webkit-line-clamp: unset;
+  -webkit-box-orient: unset;
+  white-space: normal; /* Ensure wrapping */
 }
 
 
@@ -1240,8 +1301,10 @@ main {
   text-overflow: ellipsis;
 }
 
-
-.blog-posts { margin-bottom: 10px; }
+/* Blog Posts Grid */
+.blog-posts {
+  margin-bottom: 10px;
+}
 
 .blog-posts-list {
   display: grid;
@@ -1267,6 +1330,7 @@ main {
   z-index: -1;
 }
 
+/* Blog Thumbnail */
 .blog-banner-box {
   width: 100%;
   height: 200px;
@@ -1281,10 +1345,16 @@ main {
   transition: var(--transition-1);
 }
 
-.blog-post-item > a:hover .blog-banner-box img { transform: scale(1.1); }
+.blog-post-item > a:hover .blog-banner-box img {
+  transform: scale(1.1);
+}
 
-.blog-content { padding: 15px; }
+/* Blog Content */
+.blog-content {
+  padding: 15px;
+}
 
+/* Blog Meta Data */
 .blog-meta {
   display: flex;
   justify-content: flex-start;
@@ -1306,14 +1376,18 @@ main {
   border-radius: 4px;
 }
 
+/* Blog Title */
 .blog-item-title {
   margin-bottom: 10px;
   line-height: 1.3;
   transition: var(--transition-1);
 }
 
-.blog-post-item > a:hover .blog-item-title { color: var(--orange-yellow-crayola); }
+.blog-post-item > a:hover .blog-item-title {
+  color: var(--orange-yellow-crayola);
+}
 
+/* Blog Text */
 .blog-text {
   color: var(--light-gray);
   font-size: var(--fs-6);

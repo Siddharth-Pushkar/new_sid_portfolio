@@ -142,6 +142,58 @@ portfolioModal.addEventListener("click", (event) => {
   }
 });
 
+// Function to truncate text for preview
+function truncateText(text, maxLength) {
+  return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+}
+
+// When loading blogs, make sure only the preview shows short text
+document.querySelectorAll(".blog-preview p").forEach((preview) => {
+  preview.innerText = truncateText(preview.innerText, 150); // Adjust length as needed
+});
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll(".blog-post-item .blog-text").forEach((element) => {
+    let maxLength = 150; // Character limit for preview
+    let fullText = element.innerText.trim(); // Store full text
+    if (fullText.length > maxLength) {
+      element.setAttribute("data-full-text", fullText); // Save full text in attribute
+      element.innerText = fullText.substring(0, maxLength) + "..."; // Display truncated text
+    }
+  });
+});
+
+
+function openModal(blogItem) {
+  // Get elements
+  const imgSrc = blogItem.querySelector(".blog-banner-box img").src;
+  const title = blogItem.querySelector(".blog-item-title").innerText;
+  const date = blogItem.querySelector(".blog-meta time").innerText;
+  
+  // Ensure we're getting the full text correctly
+  const textElement = blogItem.querySelector(".blog-text");
+  const fullText = textElement.hasAttribute("data-full-text") 
+    ? textElement.getAttribute("data-full-text") 
+    : textElement.innerText;
+
+  // Populate modal
+  document.getElementById("modalImg").src = imgSrc;
+  document.getElementById("modalTitle").innerText = title;
+  document.getElementById("modalDate").innerText = date;
+  document.getElementById("modalFullText").innerText = fullText; // Ensure full text is used
+
+  // Show modal
+  document.getElementById("blogModal").style.display = "flex";
+}
+
+
+function closeModal() {
+  document.getElementById("blogModal").style.display = "none";
+}
+
+
 // Ensure JavaScript runs after DOM is loaded
 document.addEventListener("DOMContentLoaded", function () {
   const blogModal = document.getElementById("blogModal");
