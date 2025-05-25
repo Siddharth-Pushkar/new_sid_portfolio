@@ -79,6 +79,65 @@ document.querySelectorAll("[data-form-input]").forEach(input => {
 });
 
 
+// Contact Form Handling
+const form = document.getElementById('contact-form');
+const successMessage = document.querySelector('.success-message');
+const errorMessage = document.querySelector('.error-message');
+
+async function handleSubmit(event) {
+  event.preventDefault();
+  const formData = new FormData(event.target);
+  
+  try {
+    const response = await fetch(event.target.action, {
+      method: form.method,
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    if (response.ok) {
+      successMessage.style.display = 'block';
+      errorMessage.style.display = 'none';
+      form.reset();
+      setTimeout(() => {
+        successMessage.style.display = 'none';
+      }, 3000);
+    } else {
+      throw new Error('Form submission failed');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    successMessage.style.display = 'none';
+    errorMessage.style.display = 'block';
+    setTimeout(() => {
+      errorMessage.style.display = 'none';
+    }, 3000);
+  }
+}
+
+form.addEventListener('submit', handleSubmit);
+
+// Update the existing page navigation code
+document.querySelectorAll("[data-nav-link]").forEach(link => {
+  link.addEventListener("click", function() {
+    // Remove active class from all nav links and pages
+    document.querySelectorAll("[data-nav-link], [data-page]").forEach(el => {
+      el.classList.remove("active");
+    });
+    
+    // Get the target page from data-nav-link
+    const targetPage = this.textContent.trim().toLowerCase();
+    
+    // Add active class to clicked nav link and corresponding page
+    this.classList.add("active");
+    document.querySelector(`[data-page="${targetPage}"]`).classList.add("active");
+    
+    window.scrollTo(0, 0);
+  });
+});
+
 
 // Portfolio modal functionality
 const portfolioModal = document.querySelector("[data-portfolio-modal]");
