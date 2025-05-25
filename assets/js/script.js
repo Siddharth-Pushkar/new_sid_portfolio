@@ -70,7 +70,6 @@ document.querySelectorAll("[data-filter-btn]").forEach(btn => {
 });
 
 // Contact form validation
-const form = document.querySelector("[data-form]");
 const formBtn = document.querySelector("[data-form-btn]");
 
 document.querySelectorAll("[data-form-input]").forEach(input => {
@@ -79,17 +78,7 @@ document.querySelectorAll("[data-form-input]").forEach(input => {
   });
 });
 
-// Page navigation
-document.querySelectorAll("[data-nav-link]").forEach(link => {
-  link.addEventListener("click", function () {
-    document.querySelectorAll("[data-page]").forEach(page => {
-      const isActive = this.innerHTML.toLowerCase() === page.dataset.page;
-      page.classList.toggle("active", isActive);
-      link.classList.toggle("active", isActive);
-    });
-    window.scrollTo(0, 0);
-  });
-});
+
 
 // Portfolio modal functionality
 const portfolioModal = document.querySelector("[data-portfolio-modal]");
@@ -259,3 +248,77 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+// Blog Modal Functionality
+const blogModal = document.createElement('div');
+blogModal.className = 'modal-container';
+blogModal.innerHTML = `
+  <div class="overlay" data-overlay></div>
+  <section class="testimonials-modal blog-modal">
+    <button class="modal-close-btn" data-blog-close>
+      <ion-icon name="close-outline"></ion-icon>
+    </button>
+    <div class="blog-modal-img-container">
+      <img src="" alt="Blog image" class="blog-modal-img">
+    </div>
+    <div class="blog-modal-content">
+      <p class="blog-category"></p>
+      <time class="blog-modal-date"></time>
+      <h3 class="h3 modal-title"></h3>
+      <div class="blog-modal-text"></div>
+      <div class="blog-modal-button-container"></div>
+    </div>
+  </section>
+`;
+document.body.appendChild(blogModal);
+
+// Dynamic height adjustment
+function adjustModalContentHeight() {
+  const modalContent = document.querySelector('.blog-modal-content');
+  const modalImage = document.querySelector('.blog-modal-img-container');
+  
+  if (window.innerWidth > 768) {
+    modalContent.style.minHeight = `${modalImage.offsetHeight}px`;
+  } else {
+    modalContent.style.minHeight = 'auto';
+  }
+}
+
+// Open modal
+document.querySelectorAll('.blog-post-item').forEach(blogItem => {
+  blogItem.addEventListener('click', function() {
+    const imgSrc = this.querySelector('img').src;
+    const title = this.querySelector('.blog-item-title').textContent;
+    const date = this.querySelector('time').textContent;
+    const content = this.querySelector('.blog-text').innerHTML;
+    const linkedinUrl = this.dataset.linkedin || '';
+
+    blogModal.querySelector('.blog-modal-img').src = imgSrc;
+    blogModal.querySelector('.modal-title').textContent = title;
+    blogModal.querySelector('.blog-modal-date').textContent = date;
+    blogModal.querySelector('.blog-modal-text').innerHTML = content;
+
+    const buttonContainer = blogModal.querySelector('.blog-modal-button-container');
+    buttonContainer.innerHTML = linkedinUrl ? 
+      `<a href="${linkedinUrl}" target="_blank" class="blog-modal-button">View LinkedIn Post</a>` : 
+      '';
+
+    document.querySelector('.overlay').classList.add('active');
+    blogModal.classList.add('active');
+    
+    setTimeout(() => {
+      adjustModalContentHeight();
+      window.addEventListener('resize', adjustModalContentHeight);
+    }, 100);
+  });
+});
+
+// Close modal
+function closeBlogModal() {
+  document.querySelector('.overlay').classList.remove('active');
+  blogModal.classList.remove('active');
+  window.removeEventListener('resize', adjustModalContentHeight);
+}
+
+document.querySelector('[data-blog-close]').addEventListener('click', closeBlogModal);
+document.querySelector('.overlay').addEventListener('click', closeBlogModal);
