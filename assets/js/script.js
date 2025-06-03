@@ -204,11 +204,11 @@ document.querySelectorAll(".blog-preview p").forEach((preview) => {
 
 document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll(".blog-post-item .blog-text").forEach((element) => {
-    let maxLength = 150; // Character limit for preview
+    let maxLength = 300; // Character limit for preview
     let fullText = element.innerText.trim(); // Store full text
-    if (fullText.length > maxLength) {
+    if (fullText.length <= maxLength) {
       element.setAttribute("data-full-text", fullText); // Save full text in attribute
-      element.innerText = fullText.substring(0, maxLength) + "..."; // Display truncated text
+      element.innerText = fullText.substring(0, maxLength); // Display truncated text
     }
   });
 });
